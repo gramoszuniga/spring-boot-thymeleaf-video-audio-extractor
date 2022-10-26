@@ -3,6 +3,7 @@ package com.einfari.springbootthymeleafvideoaudioextractor.application;
 import com.einfari.springbootthymeleafvideoaudioextractor.common.StorageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,8 @@ import java.nio.file.Path;
 @Component
 public class StorageComponent {
 
-    public static final String TEMP_PATH = "temp";
+    @Value("${temp.directory.path}")
+    public String TEMP_PATH;
 
     public Resource read(String filename) {
         try {

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author : Gonzalo Ramos Zúñiga
  * @since : 2022-10-21
@@ -28,8 +30,8 @@ public class FileController {
 
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile file, Model model) {
-        String filename = mediaComponent.extractAudio(file);
-        model.addAttribute("filename", filename);
+        List<String> filenameList = mediaComponent.extractAudio(file);
+        model.addAttribute("filenameList", filenameList);
         return "download";
     }
 

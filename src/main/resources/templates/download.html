@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-<div>
-    <p><a th:href="@{/download/{filename}(filename=${filename})}" th:text="${filename}"/></p>
-</div>
+<th:block th:each="filename : ${filenameList}">
+    <div>
+        <p><a th:href="@{/download/{filename}(filename=${filename})}" th:text="${filename}"/></p>
+    </div>
+</th:block>
 <div>
     <p><a href="/">Back</a></p>
 </div>
