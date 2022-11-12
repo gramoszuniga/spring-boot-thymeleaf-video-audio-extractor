@@ -36,3 +36,16 @@ Start the server
   java -jar target/spring-boot-thymeleaf-video-audio-extractor-1.0.0.jar
 ```
 
+Or use docker
+
+```bash
+  docker build -t spring-boot-thymeleaf-video-audio-extractor/latest .
+  docker run -p 8080:8080 spring-boot-thymeleaf-video-audio-extractor/latest
+```
+
+
+## Acknowledgements
+
+- [Linux FFmpeg and FFprobe binaries](https://johnvansickle.com/ffmpeg/)
+- [macOS FFmpeg and FFprobe binaries](https://evermeet.cx/ffmpeg/)
+
