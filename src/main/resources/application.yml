@@ -1,3 +1,11 @@
+directory:
+  path:
+    ffmpeg:
+      FFmpeg
+    ffprobe:
+      FFprobe
+    temp:
+      temp
 server:
   tomcat:
     max-swallow-size: -1
@@ -7,11 +15,3 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
-temp:
-  directory:
-    path: temp
-resource:
-  ffmpeg:
-    path: /FFmpeg
-  ffprobe:
-    path: /FFprobe

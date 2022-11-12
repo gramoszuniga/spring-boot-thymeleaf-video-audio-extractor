@@ -20,7 +20,7 @@ import java.nio.file.Path;
 @Component
 public class StorageComponent {
 
-    @Value("${temp.directory.path}")
+    @Value("${directory.path.temp}")
     public String TEMP_PATH;
 
     public Resource read(String filename) {

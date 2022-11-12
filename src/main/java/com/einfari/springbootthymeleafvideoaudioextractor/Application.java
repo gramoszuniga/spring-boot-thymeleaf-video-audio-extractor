@@ -1,5 +1,6 @@
 package com.einfari.springbootthymeleafvideoaudioextractor;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -8,21 +9,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
-    @Value("${resource.ffmpeg.path}")
+    public static final String MAC_OS_PATH = "macos";
+    public static final String LINUX_PATH = "linux";
+    @Value("${directory.path.ffmpeg}")
     public String FFMPEG;
-    @Value("${resource.ffprobe.path}")
+    @Value("${directory.path.ffprobe}")
     public String FFPROBE;
-    @Value("${temp.directory.path}")
+    @Value("${directory.path.temp}")
     public String TEMP_PATH;
 
     public static void main(String[] args) {
@@ -30,13 +30,13 @@ public class Application implements CommandLineRunner {
     }
 
     @Bean
-    public Path FFmpegPath() throws URISyntaxException {
-        return Paths.get(Objects.requireNonNull(this.getClass().getResource(FFMPEG)).toURI());
+    public Path FFmpegPath() {
+        return Path.of(FFMPEG, getOsPath());
     }
 
     @Bean
-    public Path FFprobePath() throws URISyntaxException {
-        return Paths.get(Objects.requireNonNull(this.getClass().getResource(FFPROBE)).toURI());
+    public Path FFprobePath() {
+        return Path.of(FFPROBE, getOsPath());
     }
 
     @Override
@@ -44,6 +44,16 @@ public class Application implements CommandLineRunner {
         Path path = Path.of(TEMP_PATH);
         FileSystemUtils.deleteRecursively(path);
         Files.createDirectories(path);
+    }
+
+    private String getOsPath() {
+        if (SystemUtils.IS_OS_MAC) {
+            return MAC_OS_PATH;
+        }
+        if (SystemUtils.IS_OS_LINUX) {
+            return LINUX_PATH;
+        }
+        throw new RuntimeException("Operating system not supported.");
     }
 
 }

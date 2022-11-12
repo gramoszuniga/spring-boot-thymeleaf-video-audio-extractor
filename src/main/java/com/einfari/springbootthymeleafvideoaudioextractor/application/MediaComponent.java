@@ -34,7 +34,7 @@ public class MediaComponent {
 
     private final Path FFmpegPath;
     private final Path FFprobePath;
-    @Value("${temp.directory.path}")
+    @Value("${directory.path.temp}")
     public String TEMP_PATH;
 
     public List<String> extractAudio(MultipartFile file) {
