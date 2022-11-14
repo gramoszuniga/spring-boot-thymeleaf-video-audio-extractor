@@ -27,7 +27,7 @@ public class StorageComponent {
         try {
             Resource resource = new UrlResource(Path.of(TEMP_PATH).resolve(filename).toUri());
             if (!resource.exists() || !resource.isReadable()) {
-                throw new StorageException("File is not found");
+                throw new StorageException("File not found.");
             }
             return resource;
         } catch (MalformedURLException e) {

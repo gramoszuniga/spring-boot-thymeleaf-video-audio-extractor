@@ -37,9 +37,9 @@ public class FileController {
 
     @GetMapping("/download/{filename}")
     public ResponseEntity<Resource> download(@PathVariable String filename) {
-        Resource file = storageComponent.read(filename);
+        Resource resource = storageComponent.read(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+                "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
 }

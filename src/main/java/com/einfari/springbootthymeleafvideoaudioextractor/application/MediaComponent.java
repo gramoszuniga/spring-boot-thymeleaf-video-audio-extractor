@@ -56,7 +56,7 @@ public class MediaComponent {
             return filenameList;
         } catch (IOException | JaffreeException e) {
             log.error(e.getMessage(), e);
-            throw new MediaException("Audio extraction failed");
+            throw new MediaException("Audio extraction failed.");
         }
     }
 

@@ -21,35 +21,38 @@ import java.io.IOException;
 @ControllerAdvice
 public class ExceptionController {
 
+    public static final String MESSAGE = "message";
+    public static final String PAGE_NOT_FOUND = "Page not found.";
+
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNoHandlerFound(Model model) {
-        model.addAttribute("message", "Page nor found.");
+        model.addAttribute(MESSAGE, PAGE_NOT_FOUND);
         return "error";
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleHttpRequestMethodNotSupported(Model model) {
-        model.addAttribute("message", "Page nor found.");
+        model.addAttribute(MESSAGE, PAGE_NOT_FOUND);
         return "error";
     }
 
     @ExceptionHandler(SizeLimitExceededException.class)
     public String handleSizeLimitExceeded(Model model, IOException e) {
-        model.addAttribute("message", e.getMessage());
+        model.addAttribute(MESSAGE, e.getMessage());
         return "error";
     }
 
     @ExceptionHandler(StorageException.class)
     public String handleStorage(Model model, RuntimeException e) {
-        model.addAttribute("message", e.getMessage());
+        model.addAttribute(MESSAGE, e.getMessage());
         return "error";
     }
 
     @ExceptionHandler(MediaException.class)
     public String handleMedia(Model model, RuntimeException e) {
-        model.addAttribute("message", e.getMessage());
+        model.addAttribute(MESSAGE, e.getMessage());
         return "error";
     }
 
