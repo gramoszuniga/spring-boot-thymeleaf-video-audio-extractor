@@ -32,8 +32,8 @@ import java.util.Objects;
 @Component
 public class MediaComponent {
 
-    private final Path FFmpegPath;
-    private final Path FFprobePath;
+    private final FFmpeg ffmpeg;
+    private final FFprobe ffprobe;
     @Value("${directory.path.temp}")
     public String TEMP_PATH;
 
@@ -43,8 +43,7 @@ public class MediaComponent {
             FFprobeResult FFprobeResult = getAudioStreams(file);
             for (Stream stream : FFprobeResult.getStreams()) {
                 String filename = buildFilename(file, stream.getCodecName());
-                FFmpeg.atPath(FFmpegPath)
-                        .setLogLevel(LogLevel.QUIET)
+                ffmpeg.setLogLevel(LogLevel.QUIET)
                         .setOverwriteOutput(true)
                         .addInput(PipeInput.pumpFrom(file.getInputStream()))
                         .addArguments("-map", "0:a:" + (stream.getIndex() - 1))
@@ -62,8 +61,7 @@ public class MediaComponent {
 
     public FFprobeResult getAudioStreams(MultipartFile file) {
         try {
-            return FFprobe.atPath(FFprobePath)
-                    .setShowStreams(true)
+            return ffprobe.setShowStreams(true)
                     .setSelectStreams(StreamType.AUDIO)
                     .setLogLevel(LogLevel.QUIET)
                     .setInput(file.getInputStream())

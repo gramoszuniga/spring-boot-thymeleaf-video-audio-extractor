@@ -1,5 +1,7 @@
 package com.einfari.springbootthymeleafvideoaudioextractor;
 
+import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
+import com.github.kokorin.jaffree.ffprobe.FFprobe;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -30,13 +32,13 @@ public class Application implements CommandLineRunner {
     }
 
     @Bean
-    public Path FFmpegPath() {
-        return Path.of(FFMPEG, getOsPath());
+    public FFmpeg FFmpeg() {
+        return FFmpeg.atPath(Path.of(FFMPEG, getOsPath()));
     }
 
     @Bean
-    public Path FFprobePath() {
-        return Path.of(FFPROBE, getOsPath());
+    public FFprobe FFprobe() {
+        return FFprobe.atPath(Path.of(FFPROBE, getOsPath()));
     }
 
     @Override
