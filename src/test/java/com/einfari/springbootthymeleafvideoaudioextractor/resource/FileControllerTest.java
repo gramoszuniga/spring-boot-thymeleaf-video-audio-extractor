@@ -1,6 +1,6 @@
 package com.einfari.springbootthymeleafvideoaudioextractor.resource;
 
-import com.einfari.springbootthymeleafvideoaudioextractor.application.MediaComponent;
+import com.einfari.springbootthymeleafvideoaudioextractor.application.FFmpegComponent;
 import com.einfari.springbootthymeleafvideoaudioextractor.application.StorageComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,14 +31,14 @@ class FileControllerTest {
     @Mock
     private Model model;
     @Mock
-    private MediaComponent mediaComponent;
+    private FFmpegComponent FFmpegComponent;
     @Mock
     private StorageComponent storageComponent;
     private FileController fileController;
 
     @BeforeEach
     void setUp() {
-        fileController = new FileController(mediaComponent, storageComponent);
+        fileController = new FileController(FFmpegComponent, storageComponent);
     }
 
     @Test
@@ -46,9 +46,9 @@ class FileControllerTest {
         String expected = "download";
         List<String> filenameList = List.of("filename1", "filename2");
         MockMultipartFile mockMultipartFile = new MockMultipartFile("name", "content".getBytes());
-        when(mediaComponent.extractAudio(mockMultipartFile)).thenReturn(filenameList);
+        when(FFmpegComponent.extractAudio(mockMultipartFile)).thenReturn(filenameList);
         String actual = fileController.upload(mockMultipartFile, model);
-        verify(mediaComponent, times(1)).extractAudio(eq(mockMultipartFile));
+        verify(FFmpegComponent, times(1)).extractAudio(eq(mockMultipartFile));
         verify(model, times(1)).addAttribute("filenameList", filenameList);
         assertThat(actual).isEqualTo(expected);
     }

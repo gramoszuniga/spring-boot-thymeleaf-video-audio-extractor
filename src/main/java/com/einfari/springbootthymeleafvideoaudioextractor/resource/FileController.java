@@ -1,6 +1,6 @@
 package com.einfari.springbootthymeleafvideoaudioextractor.resource;
 
-import com.einfari.springbootthymeleafvideoaudioextractor.application.MediaComponent;
+import com.einfari.springbootthymeleafvideoaudioextractor.application.FFmpegComponent;
 import com.einfari.springbootthymeleafvideoaudioextractor.application.StorageComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -25,12 +25,12 @@ import java.util.List;
 @Controller
 public class FileController {
 
-    private final MediaComponent mediaComponent;
+    private final FFmpegComponent FFmpegComponent;
     private final StorageComponent storageComponent;
 
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile file, Model model) {
-        List<String> filenameList = mediaComponent.extractAudio(file);
+        List<String> filenameList = FFmpegComponent.extractAudio(file);
         model.addAttribute("filenameList", filenameList);
         return "download";
     }
