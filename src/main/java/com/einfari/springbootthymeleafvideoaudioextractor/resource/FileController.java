@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class FileController {
     }
 
     @GetMapping("/download/{filename}")
-    public ResponseEntity<Resource> download(@PathVariable String filename) {
+    public ResponseEntity<Resource> download(@PathVariable String filename) throws MalformedURLException {
         Resource resource = storageComponent.read(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);

@@ -27,17 +27,12 @@ public class StorageComponent {
     @Value("${directory.path.temp}")
     public String TEMP_PATH;
 
-    public Resource read(String filename) {
-        try {
-            Resource resource = new UrlResource(Path.of(TEMP_PATH).resolve(filename).toUri());
-            if (!resource.exists() || !resource.isReadable()) {
-                throw new StorageException("File not found.");
-            }
-            return resource;
-        } catch (MalformedURLException e) {
-            log.error(e.getMessage(), e);
-            throw new StorageException("File cannot be read.");
+    public Resource read(String filename) throws MalformedURLException {
+        Resource resource = new UrlResource(Path.of(TEMP_PATH).resolve(filename).toUri());
+        if (!resource.exists() || !resource.isReadable()) {
+            throw new StorageException("File not found.");
         }
+        return resource;
     }
 
     public String buildFilename(MultipartFile file, String codecName) {

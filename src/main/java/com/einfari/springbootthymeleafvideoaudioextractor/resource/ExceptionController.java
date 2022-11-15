@@ -56,4 +56,10 @@ public class ExceptionController {
         return "error";
     }
 
+    @ExceptionHandler(IOException.class)
+    public String handleIOException(Model model, IOException e) {
+        model.addAttribute(MESSAGE, "Oops, something went wrong.");
+        return "error";
+    }
+
 }

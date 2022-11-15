@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -79,6 +81,16 @@ class ExceptionControllerTest {
         String message = "Audio format could not be identified.";
         MediaException mediaException = new MediaException(message);
         String actual = exceptionController.handleMedia(model, mediaException);
+        verify(model, times(1)).addAttribute(eq(MESSAGE), eq(message));
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void canHandleIOException() {
+        String expected = "error";
+        String message = "Oops, something went wrong.";
+        IOException ioException = new IOException(message);
+        String actual = exceptionController.handleIOException(model, ioException);
         verify(model, times(1)).addAttribute(eq(MESSAGE), eq(message));
         assertThat(actual).isEqualTo(expected);
     }

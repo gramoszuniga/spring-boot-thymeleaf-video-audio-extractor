@@ -1,9 +1,18 @@
 package com.einfari.springbootthymeleafvideoaudioextractor.application;
 
 import com.einfari.springbootthymeleafvideoaudioextractor.common.MediaException;
+import com.einfari.springbootthymeleafvideoaudioextractor.common.StorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -14,11 +23,29 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  **/
 class StorageComponentTest {
 
+    public static final String TEMP_PATH = "temp";
     private StorageComponent storageComponent;
+    private File file;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         storageComponent = new StorageComponent();
+        ReflectionTestUtils.setField(storageComponent, "TEMP_PATH", TEMP_PATH);
+        file = File.createTempFile("tempfile", null, new File(TEMP_PATH));
+        file.deleteOnExit();
+    }
+
+    @Test
+    void canRead() throws MalformedURLException {
+        Resource expected = new UrlResource(Path.of(TEMP_PATH).resolve(file.getName()).toUri());
+        Resource actual = storageComponent.read(file.getName());
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void cannotReadThrowsNotFound() {
+        assertThatThrownBy(() -> storageComponent.read("∅")).isInstanceOf(StorageException.class)
+                .hasMessageContaining("File not found.");
     }
 
     @Test
