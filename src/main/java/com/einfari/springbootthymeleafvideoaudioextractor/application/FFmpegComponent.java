@@ -9,6 +9,7 @@ import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
 import com.github.kokorin.jaffree.ffprobe.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +30,7 @@ public class FFmpegComponent {
 
     private final FFprobeComponent FFprobeComponent;
     private final StorageComponent storageComponent;
-    private final FFmpeg ffmpeg;
+    private final ObjectProvider<FFmpeg> ffmpeg;
     @Value("${directory.path.temp}")
     public String TEMP_PATH;
 
@@ -38,7 +39,7 @@ public class FFmpegComponent {
             List<String> filenameList = new ArrayList<>();
             for (Stream stream : FFprobeComponent.getAudioStreams(file)) {
                 String filename = storageComponent.buildFilename(file, stream.getCodecName());
-                ffmpeg.setLogLevel(LogLevel.QUIET)
+                ffmpeg.getObject().setLogLevel(LogLevel.QUIET)
                         .setOverwriteOutput(true)
                         .addInput(PipeInput.pumpFrom(file.getInputStream()))
                         .addArguments("-map", "0:a:" + (stream.getIndex() - 1))

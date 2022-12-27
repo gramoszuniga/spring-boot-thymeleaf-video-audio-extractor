@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -35,11 +36,14 @@ class FFmpegComponentTest {
     private StorageComponent storageComponent;
     @Mock
     private FFmpeg ffmpeg;
+    @Mock
+    private ObjectProvider<FFmpeg> ffmpegObjectProvider;
     private FFmpegComponent FFmpegComponent;
 
     @BeforeEach
     void setUp() {
-        FFmpegComponent = new FFmpegComponent(FFprobeComponent, storageComponent, ffmpeg);
+        doReturn(ffmpeg).when(ffmpegObjectProvider).getObject();
+        FFmpegComponent = new FFmpegComponent(FFprobeComponent, storageComponent, ffmpegObjectProvider);
         ReflectionTestUtils.setField(FFmpegComponent, "TEMP_PATH", "temp");
     }
 
